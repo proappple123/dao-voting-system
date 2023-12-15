@@ -8,6 +8,8 @@ import Bool "mo:base/Bool";
 import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Array "mo:base/Array";
+import Http "http";
+
 actor {
 
   public type Result<A, B> = Result.Result<A, B>;
