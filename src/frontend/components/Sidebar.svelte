@@ -6,6 +6,7 @@
   import { HttpAgent } from '@dfinity/agent';
   import { principal } from '../stores';
   import { daoActor } from '../stores';
+  import { onMount } from 'svelte';
 
   const handleView = () => {
     $view.current = $view.view;
@@ -51,6 +52,30 @@
     });
     daoActor.set(actor);
   };
+
+  let loginState = false;
+
+  const handleLogout = async () => {
+    let authClient = await AuthClient.create();
+    await authClient?.logout();
+    principal.set(null);
+    daoActor.set(null);
+  };
+
+  onMount(() => {
+  const loginBtn = document.getElementById('login-button');
+  const logoutBtn = document.getElementById('logout-button');
+  
+  if (loginState == true){
+    loginBtn.style.display='none';
+    logoutBtn.style.display='block';
+  } else {
+    loginBtn.style.display='block';
+    logoutBtn.style.display='none';
+  }
+});
+
+
 </script>
 
 <nav>
@@ -62,7 +87,8 @@
   </ul>
   <div class="buttons">
     <button on:click={() => handleWebpage()}> Webpage </button>
-    <button on:click={() => handleLogin()}> Login </button>
+    <button on:click={() => handleLogin()} class="login-button"> Login </button>
+    <button on:click={() => handleLogout()} class="logout-button"> Logout </button>
   </div>
 </nav>
 
